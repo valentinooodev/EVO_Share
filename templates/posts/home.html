@@ -1,0 +1,97 @@
+{% extends "../base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}EVO Share{% endblock %}
+{% block content %}
+
+
+    <main>
+
+        <section class="py-5 text-center container">
+            <div class="row py-lg-3">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="h1 fw-bold">Search, Read, Buy, Review</h1>
+                    <p class="lead text-muted">Something short and leading about the collection below—its contents, the
+                        creator,
+                        etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+                    <p>
+                        <a href="#" class="btn btn-primary my-2">Make an account</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+{#                <div class="pb-3 h2">Bài viết gần đây</div>#}
+
+                {% for post in posts %}
+                    <div class="row gx-5">
+                        <div class="col-md-6 mb-4">
+                            <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5"
+                                 data-mdb-ripple-color="light">
+                                <img src="{{ post.image.url }}" class="img-fluid"/>
+                                <a href="#!">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">{{ post.category.name }}</span>
+                            <h4><strong>{{ post.title }}</strong></h4>
+                            <p class="text-muted">
+                                {{ post.description }}
+                            </p>
+                            <img src="{{ post.author.avatar.url }}" class="rounded-circle"
+                                 style="width: 30px;"
+                                 alt="Avatar"/>
+                            <p class="text-muted">
+                                {{ post.author.display_name }}
+                            </p>
+                            <p class="text-muted">
+                                {{  post.created_at | naturaltime }}
+                            </p>
+                            <button type="button" class="btn btn-primary">Đọc thêm</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="border p-5  d-flex justify-content-center ">
+        <nav aria-label="Posts Pagination">
+            <ul class="pagination pagination-circle">
+                {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First"> Trang đầu
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in posts.paginator.page_range %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}"> {{ i }}</a></li>
+                {% endfor %}
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ posts.nex_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ posts.paginator.num }}" aria-label="First"> Trang cuối
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
